@@ -1,0 +1,26 @@
+<div class="container">
+    <h1>EXAMEN</h1>
+    <label for="">Alumnos: </label>
+    <input [(ngModel)]="numeroAlumnos" type="number" placeholder="0"><br><br>
+    <input class="input-button" type="button" value="Realizar" (click)="agregarAlumno()">
+    <div class="examen" *ngIf="mostrarExamen">
+        <div *ngFor="let alumno of alumnos">
+            <h4>Nombre: {{alumno.nombre}}</h4>
+            <table>
+                <tr *ngFor="let pregunta of alumno.preguntasExamen">
+                    <td>Pregunta {{pregunta.numero}}</td>
+                    <td>{{pregunta.enunciado}}</td>
+                    <td *ngFor="let opcion of pregunta.opciones">
+                        <p><input type="radio" [name]="pregunta.numero" [value]="opcion" (change)="valueInput($event)">{{opcion}}</p>
+                    </td>
+                </tr>
+            </table>
+            <input class="input-button marginBoton" type="button" value="Guardar" (click)="resultadoAlumno()">
+        </div>
+    </div>    
+    <div *ngIf="mostrarResultados">
+        <div *ngFor="let alumno of alumnos">
+            <p class="resultado">El {{alumno.nombre}} ha sacado un {{alumno.calificacion}}</p>
+        </div>
+    </div>
+</div>

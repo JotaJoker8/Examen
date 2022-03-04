@@ -1,0 +1,38 @@
+.container{
+    text-align: center;
+    font-size: 25px;
+}
+
+.examen{
+    text-align: left;
+    margin-left: 40rem;
+}
+
+.input-button{
+    width: 6rem;
+    height: 2rem;
+    font-size: 15px;
+    text-align: center;
+}
+
+.input{
+    text-align: left;
+    padding-left: 4rem;
+}
+
+.marginBoton{
+    margin-top: 2rem;
+}
+
+table{
+    border: 1px solid black;
+}
+
+td{
+    border: 1px solid black;
+    width: 10rem;
+}
+
+.resultado{
+    color: red;
+}
