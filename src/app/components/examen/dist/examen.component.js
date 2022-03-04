@@ -94,8 +94,12 @@ var ExamenComponent = /** @class */ (function () {
             if (index5 !== -1) {
                 this.preguntas.splice(index5, 1);
             }
+            this.preguntas.push(this.pregunta1);
+            this.preguntas.push(this.pregunta2);
+            this.preguntas.push(this.pregunta3);
+            this.preguntas.push(this.pregunta4);
+            this.preguntas.push(this.pregunta5);
         }
-        this.ngOnInit();
     };
     ExamenComponent.prototype.valueInput = function (event) {
         if (this.alumno.respuestaExamen = event.target.value) {
