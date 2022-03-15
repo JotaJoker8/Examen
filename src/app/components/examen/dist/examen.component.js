@@ -25,6 +25,7 @@ var ExamenComponent = /** @class */ (function () {
         this.mostrarBotonGuardar = false;
         this.mostrarBotonMostrar = false;
         this.mostrarResultados = false;
+        this.mostrarBotonRepetir = false;
     }
     ExamenComponent.prototype.ngOnInit = function () {
         this.preguntas = [
@@ -91,7 +92,6 @@ var ExamenComponent = /** @class */ (function () {
         this.mostrarBotonRealizar = false;
         this.notaExamen();
         this.notasAlumnos.push(this.alumnos[this.posicionAlumnoActual].examen.notaExamenAlumno);
-        console.log(this.notasAlumnos);
         this.posicionAlumnoActual++;
         if (this.posicionAlumnoActual == this.numeroAlumnos) {
             this.mostrarBotonGuardar = false;
@@ -107,6 +107,7 @@ var ExamenComponent = /** @class */ (function () {
         this.mostrarBotonGuardar = false;
         this.mostrarExamen = false;
         this.mostrarBotonMostrar = false;
+        this.mostrarBotonRepetir = true;
     };
     ExamenComponent.prototype.notaMasAlta = function () {
         for (var i = 0; i < this.alumnos.length; i++) {
@@ -114,8 +115,18 @@ var ExamenComponent = /** @class */ (function () {
                 this.alumnoNotaMasAlta = this.alumnos[i];
                 this.nombreAlumnosNotaMasAlta.push(this.alumnoNotaMasAlta.nombre);
             }
-            console.log(this.alumnos[i]);
         }
+    };
+    ExamenComponent.prototype.repetirExamen = function () {
+        this.ngOnInit();
+        this.alumnos = [];
+        this.notasAlumnos = [];
+        this.nombreAlumnosNotaMasAlta = [];
+        this.numeroAlumnos = 0;
+        this.posicionAlumnoActual = 0;
+        this.mostrarBotonRepetir = false;
+        this.mostrarBotonRealizar = true;
+        this.mostrarResultados = false;
     };
     ExamenComponent = __decorate([
         core_1.Component({

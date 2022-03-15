@@ -22,6 +22,7 @@ export class ExamenComponent implements OnInit {
   mostrarBotonGuardar: boolean = false;
   mostrarBotonMostrar: boolean = false;
   mostrarResultados: boolean = false;
+  mostrarBotonRepetir: boolean = false;
 
   constructor() { }
 
@@ -96,7 +97,6 @@ export class ExamenComponent implements OnInit {
     this.mostrarBotonRealizar = false;
     this.notaExamen();
     this.notasAlumnos.push(this.alumnos[this.posicionAlumnoActual].examen.notaExamenAlumno);
-    console.log(this.notasAlumnos);
     this.posicionAlumnoActual++;
     if(this.posicionAlumnoActual == this.numeroAlumnos){
       this.mostrarBotonGuardar = false;
@@ -113,6 +113,7 @@ export class ExamenComponent implements OnInit {
     this.mostrarBotonGuardar = false;
     this.mostrarExamen = false;
     this.mostrarBotonMostrar = false;
+    this.mostrarBotonRepetir = true;
   }
 
   notaMasAlta(){
@@ -121,8 +122,18 @@ export class ExamenComponent implements OnInit {
         this.alumnoNotaMasAlta = this.alumnos[i];
         this.nombreAlumnosNotaMasAlta.push(this.alumnoNotaMasAlta.nombre);
       }
-      console.log(this.alumnos[i]);
-      
     }
+  }
+
+  repetirExamen(){
+    this.ngOnInit();
+    this.alumnos = [];
+    this.notasAlumnos = [];
+    this.nombreAlumnosNotaMasAlta = [];
+    this.numeroAlumnos = 0;
+    this.posicionAlumnoActual = 0;
+    this.mostrarBotonRepetir = false;
+    this.mostrarBotonRealizar = true;
+    this.mostrarResultados = false;
   }
 }
