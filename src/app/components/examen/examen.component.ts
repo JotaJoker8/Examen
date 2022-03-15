@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Alumno } from 'src/app/models/alumno';
+import { Examen } from 'src/app/models/examen';
 import { Pregunta } from 'src/app/models/pregunta';
 
 @Component({
@@ -9,132 +10,119 @@ import { Pregunta } from 'src/app/models/pregunta';
 })
 export class ExamenComponent implements OnInit {
 
-  alumno: Alumno = new Alumno();
+  posicionAlumnoActual: number = 0;
   alumnos: Alumno[] = [];
   numeroAlumnos: number = 0;
   preguntas: Pregunta[] = [];
-  pregunta1!: Pregunta;
-  pregunta2!: Pregunta;
-  pregunta3!: Pregunta;
-  pregunta4!: Pregunta;
-  pregunta5!: Pregunta;
-  respuestasExamen: string[] = [];
+  alumnoNotaMasAlta: Alumno = new Alumno();
+  notasAlumnos: number[] = [];
+  nombreAlumnosNotaMasAlta: string[] = [];
   mostrarExamen: boolean = false;
+  mostrarBotonRealizar: boolean = true;
   mostrarBotonGuardar: boolean = false;
+  mostrarBotonMostrar: boolean = false;
   mostrarResultados: boolean = false;
 
   constructor() { }
 
   ngOnInit(): void {
     this.preguntas = [
-      {numero: 0, enunciado: 'Capital de Bélgica', opciones: ['Amsterdam', 'Bruselas', 'Berlín'], respuestaCorrecta: 'Bruselas'},
-      {numero: 0, enunciado: 'Capital de Letonia', opciones: ['Riga', 'Vilnius', 'Tallin'], respuestaCorrecta: 'Riga'},
-      {numero: 0, enunciado: 'Capital de Noruega', opciones: ['Helsinki', 'Estocolmo', 'Oslo'], respuestaCorrecta: 'Oslo'},
-      {numero: 0, enunciado: 'Capital de Albania', opciones: ['Tirana', 'Bucarest', 'Sofia'], respuestaCorrecta: 'Tirana'},
-      {numero: 0, enunciado: 'Capital de Turquía', opciones: ['Estambul', 'Ankara', 'Skopje'], respuestaCorrecta: 'Ankara'},
-      {numero: 0, enunciado: 'Capital de Eslovaquia', opciones: ['Praga', 'Berna', 'Bratislava'], respuestaCorrecta: 'Bratislava'},
-      {numero: 0, enunciado: 'Capital de Bosnia', opciones: ['Sarajevo', 'Zagreb', 'Belgrado'], respuestaCorrecta: 'Sarajevo'},
-      {numero: 0, enunciado: 'Capital de Polonia', opciones: ['Kiev', 'Minsk', 'Varsovia'], respuestaCorrecta: 'Varsovia'},
-      {numero: 0, enunciado: 'Capital de Lituania', opciones: ['Tallin', 'Riga', 'Vilnius'], respuestaCorrecta: 'Vilnius'},
-      {numero: 0, enunciado: 'Capital de Países Bajos', opciones: ['Copenhague', 'Amsterdam', 'Bruselas'], respuestaCorrecta: 'Amsterdam'},
-      {numero: 0, enunciado: 'Capital de Finlandia', opciones: ['Oslo', 'Helsinki', 'Estocolmo'], respuestaCorrecta: 'Helsinki'},
-      {numero: 0, enunciado: 'Capital de Bielorrusia', opciones: ['Moscú', 'Kiev', 'Minsk'], respuestaCorrecta: 'Minsk'},
-      {numero: 0, enunciado: 'Capital de Macedonia', opciones: ['Zagreb', 'Skopje', 'Tirana'], respuestaCorrecta: 'Skopje'},
-      {numero: 0, enunciado: 'Capital de Ucrania', opciones: ['Moscú', 'Minsk', 'Kiev'], respuestaCorrecta: 'Kiev'},
-      {numero: 0, enunciado: 'Capital de Suiza', opciones: ['Berna', 'Zurich', 'Basilea'], respuestaCorrecta: 'Berna'}
+      {numero: 0, enunciado: 'Capital de Bélgica', opciones: ['Amsterdam', 'Bruselas', 'Berlín'], respuestaCorrecta: 'Bruselas', respuestaAlumno: ''},
+      {numero: 0, enunciado: 'Capital de Letonia', opciones: ['Riga', 'Vilnius', 'Tallin'], respuestaCorrecta: 'Riga', respuestaAlumno: ''},
+      {numero: 0, enunciado: 'Capital de Noruega', opciones: ['Helsinki', 'Estocolmo', 'Oslo'], respuestaCorrecta: 'Oslo', respuestaAlumno: ''},
+      {numero: 0, enunciado: 'Capital de Albania', opciones: ['Tirana', 'Bucarest', 'Sofia'], respuestaCorrecta: 'Tirana', respuestaAlumno: ''},
+      {numero: 0, enunciado: 'Capital de Turquía', opciones: ['Estambul', 'Ankara', 'Skopje'], respuestaCorrecta: 'Ankara', respuestaAlumno: ''},
+      {numero: 0, enunciado: 'Capital de Eslovaquia', opciones: ['Praga', 'Berna', 'Bratislava'], respuestaCorrecta: 'Bratislava', respuestaAlumno: ''},
+      {numero: 0, enunciado: 'Capital de Bosnia', opciones: ['Sarajevo', 'Zagreb', 'Belgrado'], respuestaCorrecta: 'Sarajevo', respuestaAlumno: ''},
+      {numero: 0, enunciado: 'Capital de Polonia', opciones: ['Kiev', 'Minsk', 'Varsovia'], respuestaCorrecta: 'Varsovia', respuestaAlumno: ''},
+      {numero: 0, enunciado: 'Capital de Lituania', opciones: ['Tallin', 'Riga', 'Vilnius'], respuestaCorrecta: 'Vilnius', respuestaAlumno: ''},
+      {numero: 0, enunciado: 'Capital de Países Bajos', opciones: ['Copenhague', 'Amsterdam', 'Bruselas'], respuestaCorrecta: 'Amsterdam', respuestaAlumno: ''},
+      {numero: 0, enunciado: 'Capital de Finlandia', opciones: ['Oslo', 'Helsinki', 'Estocolmo'], respuestaCorrecta: 'Helsinki', respuestaAlumno: ''},
+      {numero: 0, enunciado: 'Capital de Bielorrusia', opciones: ['Moscú', 'Kiev', 'Minsk'], respuestaCorrecta: 'Minsk', respuestaAlumno: ''},
+      {numero: 0, enunciado: 'Capital de Macedonia', opciones: ['Zagreb', 'Skopje', 'Tirana'], respuestaCorrecta: 'Skopje', respuestaAlumno: ''},
+      {numero: 0, enunciado: 'Capital de Ucrania', opciones: ['Moscú', 'Minsk', 'Kiev'], respuestaCorrecta: 'Kiev', respuestaAlumno: ''},
+      {numero: 0, enunciado: 'Capital de Suiza', opciones: ['Berna', 'Zurich', 'Basilea'], respuestaCorrecta: 'Berna', respuestaAlumno: ''}
     ]
-
   }
 
-  agregarAlumno(){
-    this.mostrarExamen = true;
+  agregarAlumnos(){
     for (let i = 0; i < this.numeroAlumnos; i++) {
-      this.alumno = new Alumno();
-      this.alumno.nombre = 'Alumno' + i;
-      this.alumno.calificacion = 0;
-      this.alumnos.push(this.alumno);
-    }
-    this.obtenerExamen(this.alumno);
-  }
-
-  obtenerExamen(alumno: Alumno){
-    for (let i = 0; i < this.alumnos.length; i++) {
-      alumno = this.alumnos[i];
-      alumno.preguntasExamen = [];
-      let preguntaAleatoria1 = Math.floor(Math.random()*this.preguntas.length);
-      this.pregunta1 = this.preguntas[preguntaAleatoria1];
-      this.pregunta1.numero = 1;
-      alumno.preguntasExamen.push(this.pregunta1);
-      const index1: number = this.preguntas.indexOf(this.pregunta1);
-      if (index1 !== -1) {
-        this.preguntas.splice(index1, 1);
-      }
-      this.mostrarBotonGuardar = true;
-      let preguntaAleatoria2 = Math.floor(Math.random()*this.preguntas.length);
-      this.pregunta2 = this.preguntas[preguntaAleatoria2];
-      this.pregunta2.numero = 2;
-      alumno.preguntasExamen.push(this.pregunta2);
-      const index2: number = this.preguntas.indexOf(this.pregunta2);
-      if (index2 !== -1) {
-        this.preguntas.splice(index2, 1);
-      }
-      let preguntaAleatoria3 = Math.floor(Math.random()*this.preguntas.length);
-      this.pregunta3 = this.preguntas[preguntaAleatoria3];
-      this.pregunta3.numero = 3;
-      alumno.preguntasExamen.push(this.pregunta3);
-      const index3: number = this.preguntas.indexOf(this.pregunta3);
-      if (index3 !== -1) {
-        this.preguntas.splice(index3, 1);
-      }
-      let preguntaAleatoria4 = Math.floor(Math.random()*this.preguntas.length);
-      this.pregunta4 = this.preguntas[preguntaAleatoria4];
-      this.pregunta4.numero = 4;
-      alumno.preguntasExamen.push(this.pregunta4);
-      const index4: number = this.preguntas.indexOf(this.pregunta4);
-      if (index4 !== -1) {
-        this.preguntas.splice(index4, 1);
-      }
-      let preguntaAleatoria5 = Math.floor(Math.random()*this.preguntas.length);
-      this.pregunta5 = this.preguntas[preguntaAleatoria5];
-      this.pregunta5.numero = 5;
-      alumno.preguntasExamen.push(this.pregunta5);
-      const index5: number = this.preguntas.indexOf(this.pregunta5);
-      if (index5 !== -1) {
-        this.preguntas.splice(index5, 1);
-      }
-      this.preguntas.push(this.pregunta1);
-      this.preguntas.push(this.pregunta2);
-      this.preguntas.push(this.pregunta3);
-      this.preguntas.push(this.pregunta4);
-      this.preguntas.push(this.pregunta5);
+      let alumno = new Alumno();
+      alumno.nombre = 'Alumno' + i;
+      this.alumnos.push(alumno);
     }
   }
 
-  valueInput(event: any){
-    if(this.alumno.respuestaExamen = event.target.value){
-      this.respuestasExamen.push(this.alumno.respuestaExamen);
-      return this.respuestasExamen;
-    }else{
-      return false;
+  preguntasExamenes(){
+    for (let i = 0; i < this.numeroAlumnos; i++) {
+      this.alumnos[i].examen = new Examen();
+      this.alumnos[i].examen.preguntasExamen = [];
+      for (let j = 0; j < 5; j++) {
+        let indexPreguntaAleatoria = Math.floor(Math.random()*this.preguntas.length);
+        let pregunta = new Pregunta(this.preguntas[indexPreguntaAleatoria]);
+        pregunta.numero = j + 1;
+        this.alumnos[i].examen.preguntasExamen.push(pregunta);
+        this.preguntas.splice(indexPreguntaAleatoria, 1);
+      }
+      for (let x = 0; x < this.alumnos[i].examen.preguntasExamen.length; x++) {
+        this.preguntas.push(this.alumnos[i].examen.preguntasExamen[x]);
+      }
+    }
+  }
+  
+  obtenerExamenAlumno(){
+    this.mostrarExamen = true;
+    this.mostrarBotonRealizar = false;
+    this.agregarAlumnos(); 
+    this.preguntasExamenes();
+  }
+
+  guardarRespuestaAlumno(event: any, pregunta: Pregunta){
+    this.alumnos[this.posicionAlumnoActual].examen.preguntasExamen[pregunta.numero - 1].respuestaAlumno = event.target.value;
+  }
+
+  notaExamen(){
+    this.alumnos[this.posicionAlumnoActual].examen.notaExamenAlumno = 0;
+    for (let i = 0; i < this.alumnos[this.posicionAlumnoActual].examen.preguntasExamen.length; i++) {
+      if(this.alumnos[this.posicionAlumnoActual].examen.preguntasExamen[i].respuestaCorrecta ==
+        this.alumnos[this.posicionAlumnoActual].examen.preguntasExamen[i].respuestaAlumno){
+        this.alumnos[this.posicionAlumnoActual].examen.notaExamenAlumno =
+        this.alumnos[this.posicionAlumnoActual].examen.notaExamenAlumno + 2;
+      }
     }
   }
 
-  resultadoAlumno(){
+  guardarCalificacionAlumno(){
+    this.mostrarBotonRealizar = false;
+    this.notaExamen();
+    this.notasAlumnos.push(this.alumnos[this.posicionAlumnoActual].examen.notaExamenAlumno);
+    console.log(this.notasAlumnos);
+    this.posicionAlumnoActual++;
+    if(this.posicionAlumnoActual == this.numeroAlumnos){
+      this.mostrarBotonGuardar = false;
+      this.mostrarExamen = false;
+      this.mostrarResultados = true;
+      this.mostrarBotonMostrar = true;
+    }
+  }
+
+  mostrarAlumnoNotaMasAlta(){
+    this.notasAlumnos.sort(function(a, b){return b - a});
+    this.notaMasAlta();
     this.mostrarResultados = true;
-    let respuestasCorrectas: string[] = [];
-    this.alumno.calificacion = 0;
-    for (let i = 0; i < this.alumno.preguntasExamen.length; i++) {
-      respuestasCorrectas.push(this.alumno.preguntasExamen[i].respuestaCorrecta)
-    }
-    for (let i = 0; i < respuestasCorrectas.length; i++) {
-      let respuestaCorrecta = respuestasCorrectas[i];
-      for (let j = 0; j < this.respuestasExamen.length; j++) {
-        this.alumno.respuestaExamen = this.respuestasExamen[j];
-        if(respuestaCorrecta == this.alumno.respuestaExamen){
-          this.alumno.calificacion = this.alumno.calificacion + 2;
-        }
+    this.mostrarBotonGuardar = false;
+    this.mostrarExamen = false;
+    this.mostrarBotonMostrar = false;
+  }
+
+  notaMasAlta(){
+    for (let i = 0; i < this.alumnos.length; i++) {
+      if(this.alumnos[i].examen.notaExamenAlumno == this.notasAlumnos[0]){
+        this.alumnoNotaMasAlta = this.alumnos[i];
+        this.nombreAlumnosNotaMasAlta.push(this.alumnoNotaMasAlta.nombre);
       }
+      console.log(this.alumnos[i]);
+      
     }
-    return this.alumno.calificacion;
   }
 }

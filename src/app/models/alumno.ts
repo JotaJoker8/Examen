@@ -1,8 +1,6 @@
-import { Pregunta } from "./pregunta"
+import { Examen } from "./examen"
 
 export class Alumno{
     public nombre!: string
-    public preguntasExamen!: Pregunta[]
-    public respuestaExamen!: string
-    public calificacion!: number
+    public examen!: Examen
 }

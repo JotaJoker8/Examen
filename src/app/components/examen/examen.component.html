@@ -2,25 +2,24 @@
     <h1>EXAMEN</h1>
     <label for="">Alumnos: </label>
     <input [(ngModel)]="numeroAlumnos" type="number" placeholder="0"><br><br>
-    <input class="input-button" type="button" value="Realizar" (click)="agregarAlumno()">
+    <input *ngIf="mostrarBotonRealizar" class="input-button" type="button" value="Realizar" (click)="obtenerExamenAlumno()">
     <div class="examen" *ngIf="mostrarExamen">
-        <div *ngFor="let alumno of alumnos">
-            <h4>Nombre: {{alumno.nombre}}</h4>
-            <table>
-                <tr *ngFor="let pregunta of alumno.preguntasExamen">
-                    <td>Pregunta {{pregunta.numero}}</td>
-                    <td>{{pregunta.enunciado}}</td>
-                    <td *ngFor="let opcion of pregunta.opciones">
-                        <p><input type="radio" [name]="pregunta.numero" [value]="opcion" (change)="valueInput($event)">{{opcion}}</p>
-                    </td>
-                </tr>
-            </table>
-            <input class="input-button marginBoton" type="button" value="Guardar" (click)="resultadoAlumno()">
-        </div>
-    </div>    
+        <h4>Nombre: {{alumnos[posicionAlumnoActual]?.nombre}}</h4>
+        <table>
+            <tr *ngFor="let pregunta of alumnos[posicionAlumnoActual]?.examen?.preguntasExamen">
+                <td>Pregunta {{pregunta.numero}}</td>
+                <td>{{pregunta.enunciado}}</td>
+                <td *ngFor="let opcion of pregunta.opciones">
+                    <p><input type="radio" [name]="pregunta.numero + alumnos[posicionAlumnoActual].nombre" [value]="opcion" (change)="guardarRespuestaAlumno($event, pregunta)">{{opcion}}</p>
+                </td>
+            </tr>
+        </table>
+        <input class="input-button marginBoton" type="button" value="Guardar" (click)="guardarCalificacionAlumno()">&nbsp;
+    </div>
+    <input *ngIf="mostrarBotonMostrar" class="input-button marginBoton" type="button" value="Mostrar Nota" (click)="mostrarAlumnoNotaMasAlta()">    
     <div *ngIf="mostrarResultados">
-        <div *ngFor="let alumno of alumnos">
-            <p class="resultado">El {{alumno.nombre}} ha sacado un {{alumno.calificacion}}</p>
+        <div *ngFor="let alumnoNotaMasAlta of nombreAlumnosNotaMasAlta">
+            <p class="resultado">El {{alumnoNotaMasAlta}} ha sacado la nota más alta con un {{notasAlumnos[0]}}</p>
         </div>
     </div>
 </div>
